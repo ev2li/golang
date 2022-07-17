@@ -1,4 +1,4 @@
-package base2
+package main
 
 import "fmt"
 
