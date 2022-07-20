@@ -30,5 +30,6 @@ func main() {
 		} else {
 			fmt.Println(info.Name(), "是一个文件")
 		}
+
 	}
 }
