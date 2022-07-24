@@ -29,6 +29,16 @@ func main() {
 			for {
 				buf := make([]byte, 4096)
 				n, err := conn.Read(buf)
+				if string(buf[:n]) == "exit\n" {
+					fmt.Println("服务器接收到客户退出请求，断开连接!!")
+					return
+				}
+
+				if n == 0 {
+					fmt.Println("服务器检测到客户端已关闭，断开连接!!!")
+					return
+				}
+
 				if err != nil {
 					fmt.Println("conn.Read err:", err)
 					return

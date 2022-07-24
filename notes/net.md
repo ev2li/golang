@@ -9,3 +9,6 @@
   - net.Dial
   - net.Write
   - net.Read
+  
+- 服务器判断关闭
+  - Read读客户端，返回0 -- 对端关闭
