@@ -37,3 +37,9 @@
 
 ## __缓冲区__
 - 内存中的一块区域,用来减少物理磁盘访问操作
+
+## __<font color="#006666">标准库io包</font>__
+- Writer接口
+- Reader接口
+- os.File同时实现了Writer和Reader接口
+
