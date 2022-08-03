@@ -15,7 +15,7 @@ import (
 const CACHE_LEN = 2
 
 var (
-	kfMap map[string]QueryResult
+	kfMap map[string]TimedData
 	// chanSema chan int
 	chanData chan *KfPerson
 	db       *sqlx.DB
@@ -95,13 +95,20 @@ func init() {
 
 func insertKfPerson() {
 	for kfPerson := range chanData {
-		rt, err := db.Exec("Insert into kfperson(name, idcard) values(?, ?);", kfPerson.Name, kfPerson.Idcard)
-		HandlerError(err, "db.Exec")
-		if n, err := rt.RowsAffected(); err == nil && n > 0 {
-			fmt.Printf("插入%s成功\n", kfPerson.Name)
+		for {
+			rt, err := db.Exec("Insert into kfperson(name, idcard) values(?, ?);", kfPerson.Name, kfPerson.Idcard)
+			HandlerError(err, "db.Exec")
+			if err != nil {
+				// connectex:Only one usage of each socket address is normally permitted
+				<-time.After(5 * time.Second)
+			} else {
+				if n, err := rt.RowsAffected(); err == nil && n > 0 {
+					fmt.Printf("插入%s成功\n", kfPerson.Name)
+					break
+				}
+			}
 		}
 	}
-
 }
 
 func main() {
@@ -109,7 +116,7 @@ func main() {
 	HandlerError(err, "sqlx.Open")
 	defer db.Close()
 	//初始化缓存
-	kfMap = make(map[string]QueryResult, 0)
+	kfMap = make(map[string]TimedData, 0)
 
 	for {
 		var name string
@@ -127,11 +134,14 @@ func main() {
 			for key := range kfMap {
 				fmt.Println(key)
 			}
+			continue
 		}
 		//先查缓存
-		if qr, ok := kfMap[name]; ok {
-			fmt.Println("查询到%d条结果:", len(qr.value))
-			fmt.Println(qr.value)
+		if td, ok := kfMap[name]; ok {
+			qr := td.(*QueryResult)
+			fmt.Printf("查询到%d条结果:", len(qr.Value))
+			fmt.Println(qr.Value)
+			qr.Count += 1
 			continue
 		}
 
@@ -139,14 +149,14 @@ func main() {
 		kfPeople := make([]KfPerson, 0)
 		err = db.Select(&kfPeople, "select name, idcard from kfperson where name like ?;", name)
 		HandlerError(err, "db.Select")
-		fmt.Println("查询到%d条结果:", len(kfPeople))
+		fmt.Printf("查询到%d条结果\n", len(kfPeople))
 		fmt.Printf("kfPeopel: %v\n", kfPeople)
 
 		//入内存
-		queryResult := QueryResult{value: kfPeople}
-		queryResult.cacheTime = time.Now().UnixNano()
-		queryResult.count = 1
-		kfMap[name] = queryResult
+		queryResult := QueryResult{Value: kfPeople}
+		queryResult.CacheTime = time.Now().UnixNano()
+		queryResult.Count = 1
+		kfMap[name] = &queryResult
 		//有必要时淘汰一些缓存
 
 		if len(kfMap) > CACHE_LEN {
@@ -154,17 +164,4 @@ func main() {
 			fmt.Printf("delkey: %v已被淘汰出缓存\n", delkey)
 		}
 	}
-}
-
-//整理缓存,删除加入最早的
-func UpdateCache(cacheMap *map[string]QueryResult) (delkey string) {
-	earliestTime := time.Now().UnixNano()
-	for key, value := range *cacheMap {
-		if value.cacheTime < earliestTime {
-			earliestTime = value.cacheTime
-			delkey = key
-		}
-	}
-	delete(*cacheMap, delkey)
-	return delkey
 }

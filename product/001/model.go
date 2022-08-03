@@ -8,7 +8,11 @@ type KfPerson struct {
 
 //缓存结果(存入时间和查询频次)
 type QueryResult struct {
-	value     []KfPerson
-	cacheTime int64
-	count     int
+	Value     []KfPerson
+	CacheTime int64
+	Count     int
+}
+
+func (qr *QueryResult) GetCacheTime() int64 {
+	return qr.CacheTime
 }
