@@ -3,8 +3,10 @@ package service
 import (
 	"log"
 	"net/http"
+	"online/define"
 	"online/helper"
 	"online/models"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -228,6 +230,43 @@ func Register(c *gin.Context) {
 		"code": 200,
 		"data": map[string]interface{}{
 			"token": token,
+		},
+	})
+}
+
+// GetRankList
+// @Tag 公共方法
+// @Summary 用户排行榜
+// @Param page query int false "page"
+// @Param size query int false "size"
+// @Success 200 {string} json "{"code":"200", "msg":"","data":""}"
+// @Router /rank-list [get]
+func GetRankList(c *gin.Context) {
+	size, _ := strconv.Atoi(c.DefaultQuery("size", define.DefaultSize))
+	page, err := strconv.Atoi(c.DefaultQuery("page", define.DefaultPage))
+	if err != nil {
+		log.Println("GetProblemList page strconv Error :", err)
+		return
+	}
+	page = (page - 1) * size
+	var count int64
+
+	list := make([]*models.UserBasic, 0)
+	err = models.DB.Model(new(models.UserBasic)).Count(&count).Order("finish_problem_num DESC, submit_num ASC").
+		Offset(page).Limit(size).Find(&list).Error
+
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "Get Rank List Error:" + err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"data": map[string]interface{}{
+			"list":  list,
+			"count": count,
 		},
 	})
 }

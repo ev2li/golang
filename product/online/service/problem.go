@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"online/define"
+	"online/helper"
 	"online/models"
 	"strconv"
 
@@ -88,5 +89,59 @@ func GetProblemDetail(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"data": data,
+	})
+}
+
+// GetProblemCreate
+// @Tag 管理员私有方法
+// @Summary 问题创建
+// @Param token header string true "token"
+// @Param title formData string true "title"
+// @Param content formData string true "content"
+// @Param max_runtime formData string true "max_runtime"
+// @Param max_mem formData string true "max_mem"
+// @Param category_ids formData array flase "category_ids"
+// @Param test_cases formData array flase "test_cases"
+// @Success 200 {string} json "{"code":"200", "msg":"","data":""}"
+// @Router /register [post]
+func GetProblemCreate(c *gin.Context) {
+	title := c.PostForm("title")
+	content := c.PostForm("content")
+	max_runtime, _ := strconv.Atoi(c.PostForm("max_runtime"))
+	max_mem, _ := strconv.Atoi(c.PostForm("max_mem"))
+	category_ids := c.PostFormArray("category_ids")
+	test_cases := c.PostFormArray("test_cases")
+
+	if title == "" || content == "" || len(category_ids) == 0 || len(test_cases) == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "参数不能为空",
+		})
+		return
+	}
+	identity := helper.GetUUID()
+	data := &models.ProblemBasic{
+		Identity:   identity,
+		Title:      title,
+		Content:    content,
+		MaxRuntime: max_runtime,
+		MaxMem:     max_mem,
+	}
+
+	//处理分类
+
+	//处理测试用例
+
+	err := models.DB.Create(data).Error
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "Problem Create Error:" + err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"data": map[string]interface{}{},
 	})
 }

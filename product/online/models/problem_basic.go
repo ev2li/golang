@@ -10,8 +10,9 @@ type ProblemBasic struct {
 	ProblemCategories []*ProblemCategory `gorm:"foreignKey:problem_id;references:id"`
 	Title             string             `gorm:"column:title;type:varchar(255);" json:"title"`
 	Content           string             `gorm:"column:content;type:text;" json:"content"`
-	MaxRuntime        string             `gorm:"column:max_runtime;type:int(11);" json:"max_runtime"`
-	MaxMem            string             `gorm:"column:max_mem;type:int(11);" json:"max_mem"`
+	MaxRuntime        int                `gorm:"column:max_runtime;type:int(11);" json:"max_runtime"`
+	MaxMem            int                `gorm:"column:max_mem;type:int(11);" json:"max_mem"`
+	TestCases         []*TestCase        `gorm:"foreignKey:problem_identity;references:identity"`
 }
 
 func (table *ProblemBasic) TableName() string {
