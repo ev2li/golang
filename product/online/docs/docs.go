@@ -16,8 +16,169 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/category-create": {
+            "post": {
+                "tags": [
+                    "管理员私有方法"
+                ],
+                "summary": "分类创建",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "authorization",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "name",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "parentId",
+                        "name": "parentId",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":\"200\", \"msg\":\"\",\"data\":\"\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/category-delete": {
+            "delete": {
+                "tags": [
+                    "管理员私有方法"
+                ],
+                "summary": "分类删除",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "authorization",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "identity",
+                        "name": "identity",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":\"200\", \"msg\":\"\",\"data\":\"\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/category-list": {
+            "get": {
+                "tags": [
+                    "管理员私有方法"
+                ],
+                "summary": "分类列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "authorization",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "size",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "keyword",
+                        "name": "keyword",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":\"200\", \"msg\":\"\",\"data\":\"\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/category-modify": {
+            "put": {
+                "tags": [
+                    "管理员私有方法"
+                ],
+                "summary": "分类修改",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "authorization",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "identity",
+                        "name": "identity",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "name",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "parentId",
+                        "name": "parentId",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":\"200\", \"msg\":\"\",\"data\":\"\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
+                "tags": [
+                    "公共方法"
+                ],
                 "summary": "用户登录",
                 "parameters": [
                     {
@@ -45,6 +206,9 @@ const docTemplate = `{
         },
         "/problem-create": {
             "post": {
+                "tags": [
+                    "管理员私有方法"
+                ],
                 "summary": "问题创建",
                 "parameters": [
                     {
@@ -106,6 +270,9 @@ const docTemplate = `{
         },
         "/problem-detail": {
             "get": {
+                "tags": [
+                    "公共方法"
+                ],
                 "summary": "问题详情",
                 "parameters": [
                     {
@@ -127,6 +294,9 @@ const docTemplate = `{
         },
         "/problem-list": {
             "get": {
+                "tags": [
+                    "公共方法"
+                ],
                 "summary": "问题列表",
                 "parameters": [
                     {
@@ -166,6 +336,9 @@ const docTemplate = `{
         },
         "/rank-list": {
             "get": {
+                "tags": [
+                    "公共方法"
+                ],
                 "summary": "用户排行榜",
                 "parameters": [
                     {
@@ -193,6 +366,9 @@ const docTemplate = `{
         },
         "/register": {
             "post": {
+                "tags": [
+                    "公共方法"
+                ],
                 "summary": "用户注册",
                 "parameters": [
                     {
@@ -242,6 +418,9 @@ const docTemplate = `{
         },
         "/send-code": {
             "post": {
+                "tags": [
+                    "公共方法"
+                ],
                 "summary": "发送验证码",
                 "parameters": [
                     {
@@ -263,6 +442,9 @@ const docTemplate = `{
         },
         "/submit-list": {
             "get": {
+                "tags": [
+                    "公共方法"
+                ],
                 "summary": "提交列表",
                 "parameters": [
                     {
@@ -308,6 +490,9 @@ const docTemplate = `{
         },
         "/user-detail": {
             "get": {
+                "tags": [
+                    "公共方法"
+                ],
                 "summary": "用户详情",
                 "parameters": [
                     {

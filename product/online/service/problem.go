@@ -14,7 +14,7 @@ import (
 )
 
 // GetProblemList
-// @Tag 公共方法
+// @Tags 公共方法
 // @Summary 问题列表
 // @Param page query int false "page"
 // @Param size query int false "size"
@@ -52,7 +52,7 @@ func GetProblemList(c *gin.Context) {
 }
 
 // GetProblemDetail
-// @Tag 公共方法
+// @Tags 公共方法
 // @Summary 问题详情
 // @Param identity query string false "problem_identity"
 // @Success 200 {string} json "{"code":"200", "msg":"","data":""}"
@@ -94,7 +94,7 @@ func GetProblemDetail(c *gin.Context) {
 }
 
 // GetProblemCreate
-// @Tag 管理员私有方法
+// @Tags 管理员私有方法
 // @Summary 问题创建
 // @Param authorization header string true "authorization"
 // @Param title formData string true "title"

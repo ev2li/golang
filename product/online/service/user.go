@@ -14,7 +14,7 @@ import (
 )
 
 // GetUserDetail
-// @Tag 公共方法
+// @Tags 公共方法
 // @Summary 用户详情
 // @Param identity query string false "user_identity"
 // @Success 200 {string} json "{"code":"200", "msg":"","data":""}"
@@ -45,7 +45,7 @@ func GetUserDetail(c *gin.Context) {
 }
 
 // Login
-// @Tag 公共方法
+// @Tags 公共方法
 // @Summary 用户登录
 // @Param username formData string false "username"
 // @Param password formData string false "password"
@@ -104,7 +104,7 @@ func Login(c *gin.Context) {
 }
 
 // SendCode
-// @Tag 公共方法
+// @Tags 公共方法
 // @Summary 发送验证码
 // @Param email formData string false "email"
 // @Success 200 {string} json "{"code":"200", "msg":"","data":""}"
@@ -138,7 +138,7 @@ func SendCode(c *gin.Context) {
 }
 
 // Register
-// @Tag 公共方法
+// @Tags 公共方法
 // @Summary 用户注册
 // @Param mail formData string true "mail"
 // @Param code formData string true "code"
@@ -235,7 +235,7 @@ func Register(c *gin.Context) {
 }
 
 // GetRankList
-// @Tag 公共方法
+// @Tags 公共方法
 // @Summary 用户排行榜
 // @Param page query int false "page"
 // @Param size query int false "size"

@@ -11,7 +11,7 @@ import (
 )
 
 // GetSubmitList
-// @Tag 公共方法
+// @Tags 公共方法
 // @Summary 提交列表
 // @Param page query int false "page"
 // @Param size query int false "size"
