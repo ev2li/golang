@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"online/define"
@@ -95,15 +96,15 @@ func GetProblemDetail(c *gin.Context) {
 // GetProblemCreate
 // @Tag 管理员私有方法
 // @Summary 问题创建
-// @Param token header string true "token"
+// @Param authorization header string true "authorization"
 // @Param title formData string true "title"
 // @Param content formData string true "content"
-// @Param max_runtime formData string true "max_runtime"
-// @Param max_mem formData string true "max_mem"
+// @Param max_runtime formData string false "max_runtime"
+// @Param max_mem formData string false "max_mem"
 // @Param category_ids formData array flase "category_ids"
-// @Param test_cases formData array flase "test_cases"
+// @Param test_cases formData array true "test_cases"
 // @Success 200 {string} json "{"code":"200", "msg":"","data":""}"
-// @Router /register [post]
+// @Router /problem-create [post]
 func GetProblemCreate(c *gin.Context) {
 	title := c.PostForm("title")
 	content := c.PostForm("content")
@@ -129,9 +130,56 @@ func GetProblemCreate(c *gin.Context) {
 	}
 
 	//处理分类
-
+	CategoryBasics := make([]*models.ProblemCategory, 0)
+	for _, id := range category_ids {
+		category_id, _ := strconv.Atoi(id)
+		CategoryBasics = append(CategoryBasics, &models.ProblemCategory{
+			ProblemId:  data.ID,
+			CategoryId: uint(category_id),
+		})
+	}
+	data.ProblemCategories = CategoryBasics
 	//处理测试用例
+	testCaseBasics := make([]*models.TestCase, 0)
+	for _, testCase := range test_cases {
+		//例: {"input":"1 2\n", "output":"3\n"}
+		caseMap := make(map[string]string)
+		err := json.Unmarshal([]byte(testCase), &caseMap)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"code": -1,
+				"msg":  "测试用例格式错误",
+			})
+			return
+		}
 
+		if _, ok := caseMap["input"]; !ok {
+			c.JSON(http.StatusOK, gin.H{
+				"code": -1,
+				"msg":  "测试用例格式错误",
+			})
+			return
+		}
+
+		if _, ok := caseMap["output"]; !ok {
+			c.JSON(http.StatusOK, gin.H{
+				"code": -1,
+				"msg":  "测试用例格式错误",
+			})
+			return
+		}
+
+		testCaseBasic := &models.TestCase{
+			Identity:        helper.GetUUID(),
+			ProblemIdentity: identity,
+			Input:           caseMap["input"],
+			Output:          caseMap["output"],
+		}
+		testCaseBasics = append(testCaseBasics, testCaseBasic)
+	}
+	data.TestCases = testCaseBasics
+
+	//创建问题
 	err := models.DB.Create(data).Error
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -142,6 +190,8 @@ func GetProblemCreate(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
-		"data": map[string]interface{}{},
+		"data": map[string]interface{}{
+			"identity": identity,
+		},
 	})
 }

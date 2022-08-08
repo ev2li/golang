@@ -1,6 +1,7 @@
 package router
 
 import (
+	"online/middlewares"
 	"online/service"
 
 	_ "online/docs"
@@ -12,24 +13,29 @@ import (
 
 func Router() *gin.Engine {
 	r := gin.Default()
+	// Swagger配置
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	r.GET("/ping", service.Ping)
-	//问题
+
+	// 路由规则
+
+	// 公有方法
+	// 问题
 	r.GET("/problem-list", service.GetProblemList)
 	r.GET("/problem-detail", service.GetProblemDetail)
 
-	//用户
+	// 用户
 	r.GET("/user-detail", service.GetUserDetail)
 	r.POST("/login", service.Login)
 	r.POST("/send-code", service.SendCode)
 	r.POST("/register", service.Register)
 
-	//用户排行榜
+	// 用户排行榜
 	r.GET("/rank-list", service.GetRankList)
 	//提交记录
 	r.GET("/submit-list", service.GetSubmitList)
 
-	//管理员私有方法
-	r.POST("/problem-create", service.GetProblemCreate)
+	// 管理员私有方法
+	r.POST("/problem-create", middlewares.AuthAdminCheck(), service.GetProblemCreate)
 	return r
 }
