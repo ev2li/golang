@@ -1,0 +1,22 @@
+user im;
+db.user.insert({});
+db.user.find();
+db.user.drop();
+show collections;
+
+//用户表
+db.user_basic.insert({"account":"账号", "password":"密码","nickname":"昵称","sex":1,"email":"邮箱","avatar":"头像","created_at":1,"updated_at":1})
+db.user_basic.insert({"account":"admin", "password":"21232f297a57a5a743894a0e4a801fc3","nickname":"昵称1","sex":1,"email":"邮箱1","avatar":"头像1","created_at":1,"updated_at":1})
+//消息表
+db.message_basic.insert({"user_identity":"用户唯一标识","room_identity":"房间唯一标识","data":"发送的数据","created_at":1,"updated_at":1});
+//房间表
+db.room_basic.insert({"number":"房间号","name":"房间名称","info":"房间简介","user_identity":"房间创建者唯一标识","created_at":1,"updated_at":1});
+//用户房间关联表
+db.user_room.insert({"user_identity":"用户唯一标识","room_identity":"房间唯一标识","message_identity":"消息唯一标识", "created_at":1,"updated_at":1});
+
+//创建账号密码
+use admin
+db.createUser({user:"admin",pwd:"admin",roles:[{role:"root",db:"admin"}]})
+db.changeUserPassword('admin','21232f297a57a5a743894a0e4a801fc3')
+
+
