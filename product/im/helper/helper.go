@@ -2,12 +2,16 @@ package helper
 
 import (
 	"crypto/md5"
+	"crypto/tls"
 	"fmt"
+	"im/define"
 	"math/rand"
+	"net/smtp"
 	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/jordan-wright/email"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -54,6 +58,25 @@ func ParserToken(tokenString string) (*UserClaims, error) {
 		return nil, fmt.Errorf("parser Token Error:%v", err)
 	}
 	return userClaim, nil
+}
+
+func SendMail(toUserEmail, code string) error {
+	e := email.NewEmail()
+	e.From = "Get <873677408@qq.com>"
+	e.To = []string{toUserEmail}
+	e.Subject = "验证码发送测试"
+	e.HTML = []byte("您的验证码:<b>" + code + "</b>")
+	// err := e.Send("smtp.163.com:465", smtp.PlainAuth("", "873677408@qq.com", "password123", "smtp.qq.com"))
+	//返回EOF时，关闭SSL重试
+	err := e.SendWithTLS("smtp.163.com:465", smtp.PlainAuth("", "873677408@qq.com", define.MailPassword, "smtp.qq.com"), &tls.Config{
+		InsecureSkipVerify: true,
+		ServerName:         "smtp.163.com:465",
+	})
+
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func GetUUID() string {

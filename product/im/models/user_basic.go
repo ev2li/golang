@@ -7,7 +7,7 @@ import (
 )
 
 type UserBasic struct {
-	Identity  string `bson:"_id"`
+	Identity  string `bson:"identity"`
 	Account   string `bson:"account"`
 	Password  string `bson:"password"`
 	Nickname  string `bson:"nickname"`
@@ -28,4 +28,18 @@ func GetUserBasicByAccountPassword(account, password string) (*UserBasic, error)
 		FindOne(context.Background(), bson.D{{"account", account}, {"password", password}}).
 		Decode(ub)
 	return ub, err
+}
+
+func GetUserBasicByIdentity(identity string) (*UserBasic, error) {
+	ub := new(UserBasic)
+	err := Mongo.Collection(UserBasic{}.CollectionName()).
+		FindOne(context.Background(), bson.D{{"identity", identity}}).
+		Decode(ub)
+	return ub, err
+}
+
+func GetUserBasicCountByEmail(email string) (int64, error) {
+	return Mongo.Collection(UserBasic{}.CollectionName()).
+		CountDocuments(context.Background(), bson.D{{"email", email}})
+
 }
