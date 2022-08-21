@@ -29,13 +29,13 @@ type UserRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// @inject_tag: json:"nick_name" form:"nick_name"
+	// @inject_tag: json:"nick_name" form:"nick_name" uri:"nick_name"
 	NickName string `protobuf:"bytes,1,opt,name=NickName,proto3" json:"NickName,omitempty"`
-	// @inject_tag: json:"user_name" form:"user_name"
+	// @inject_tag: json:"user_name" form:"user_name" uri:"user_name"
 	UserName string `protobuf:"bytes,2,opt,name=UserName,proto3" json:"UserName,omitempty"`
-	// @inject_tag: json:"password" form:"password"
+	// @inject_tag: json:"password" form:"password" uri:"password"
 	Password string `protobuf:"bytes,3,opt,name=Password,proto3" json:"Password,omitempty"`
-	// @inject_tag: json:"password_confirm" form:"password_confirm"
+	// @inject_tag: json:"password_confirm" form:"password_confirm" uri:"password_confirm"
 	PasswordConfirm string `protobuf:"bytes,4,opt,name=PasswordConfirm,proto3" json:"PasswordConfirm,omitempty"`
 }
 
@@ -174,17 +174,20 @@ var file_userService_proto_rawDesc = []byte{
 	0x0b, 0x32, 0x0d, 0x2e, 0x70, 0x62, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x4d, 0x6f, 0x64, 0x65, 0x6c,
 	0x52, 0x0a, 0x55, 0x73, 0x65, 0x72, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x12, 0x12, 0x0a, 0x04,
 	0x43, 0x6f, 0x64, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x43, 0x6f, 0x64, 0x65,
-	0x32, 0x7c, 0x0a, 0x0b, 0x55, 0x73, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12,
-	0x34, 0x0a, 0x09, 0x55, 0x65, 0x73, 0x72, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x12, 0x0f, 0x2e, 0x70,
-	0x62, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e,
-	0x70, 0x62, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x37, 0x0a, 0x0c, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x67,
-	0x69, 0x73, 0x74, 0x65, 0x72, 0x12, 0x0f, 0x2e, 0x70, 0x62, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x70, 0x62, 0x2e, 0x55, 0x73, 0x65, 0x72,
-	0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x1b,
-	0x5a, 0x19, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x73, 0x65, 0x72, 0x76,
-	0x69, 0x63, 0x65, 0x3b, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x32, 0xb3, 0x01, 0x0a, 0x0b, 0x55, 0x73, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x12, 0x34, 0x0a, 0x09, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x12, 0x0f, 0x2e,
+	0x70, 0x62, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16,
+	0x2e, 0x70, 0x62, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x37, 0x0a, 0x0c, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65,
+	0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x12, 0x0f, 0x2e, 0x70, 0x62, 0x2e, 0x55, 0x73, 0x65, 0x72,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x70, 0x62, 0x2e, 0x55, 0x73, 0x65,
+	0x72, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
+	0x35, 0x0a, 0x0a, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x6f, 0x67, 0x6f, 0x75, 0x74, 0x12, 0x0f, 0x2e,
+	0x70, 0x62, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16,
+	0x2e, 0x70, 0x62, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x1b, 0x5a, 0x19, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x72,
+	0x6e, 0x61, 0x6c, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x3b, 0x73, 0x65, 0x72, 0x76,
+	0x69, 0x63, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -207,12 +210,14 @@ var file_userService_proto_goTypes = []interface{}{
 }
 var file_userService_proto_depIdxs = []int32{
 	2, // 0: pb.UserDetailResponse.UserDetail:type_name -> pb.UserModel
-	0, // 1: pb.UserService.UesrLogin:input_type -> pb.UserRequest
+	0, // 1: pb.UserService.UserLogin:input_type -> pb.UserRequest
 	0, // 2: pb.UserService.UserRegister:input_type -> pb.UserRequest
-	1, // 3: pb.UserService.UesrLogin:output_type -> pb.UserDetailResponse
-	1, // 4: pb.UserService.UserRegister:output_type -> pb.UserDetailResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
+	0, // 3: pb.UserService.UserLogout:input_type -> pb.UserRequest
+	1, // 4: pb.UserService.UserLogin:output_type -> pb.UserDetailResponse
+	1, // 5: pb.UserService.UserRegister:output_type -> pb.UserDetailResponse
+	1, // 6: pb.UserService.UserLogout:output_type -> pb.UserDetailResponse
+	4, // [4:7] is the sub-list for method output_type
+	1, // [1:4] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
 	1, // [1:1] is the sub-list for extension extendee
 	0, // [0:1] is the sub-list for field type_name
@@ -282,8 +287,9 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type UserServiceClient interface {
-	UesrLogin(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserDetailResponse, error)
+	UserLogin(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserDetailResponse, error)
 	UserRegister(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserDetailResponse, error)
+	UserLogout(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserDetailResponse, error)
 }
 
 type userServiceClient struct {
@@ -294,9 +300,9 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 	return &userServiceClient{cc}
 }
 
-func (c *userServiceClient) UesrLogin(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserDetailResponse, error) {
+func (c *userServiceClient) UserLogin(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserDetailResponse, error) {
 	out := new(UserDetailResponse)
-	err := c.cc.Invoke(ctx, "/pb.UserService/UesrLogin", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.UserService/UserLogin", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -312,41 +318,54 @@ func (c *userServiceClient) UserRegister(ctx context.Context, in *UserRequest, o
 	return out, nil
 }
 
+func (c *userServiceClient) UserLogout(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserDetailResponse, error) {
+	out := new(UserDetailResponse)
+	err := c.cc.Invoke(ctx, "/pb.UserService/UserLogout", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 type UserServiceServer interface {
-	UesrLogin(context.Context, *UserRequest) (*UserDetailResponse, error)
+	UserLogin(context.Context, *UserRequest) (*UserDetailResponse, error)
 	UserRegister(context.Context, *UserRequest) (*UserDetailResponse, error)
+	UserLogout(context.Context, *UserRequest) (*UserDetailResponse, error)
 }
 
 // UnimplementedUserServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedUserServiceServer struct {
 }
 
-func (*UnimplementedUserServiceServer) UesrLogin(context.Context, *UserRequest) (*UserDetailResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UesrLogin not implemented")
+func (*UnimplementedUserServiceServer) UserLogin(context.Context, *UserRequest) (*UserDetailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserLogin not implemented")
 }
 func (*UnimplementedUserServiceServer) UserRegister(context.Context, *UserRequest) (*UserDetailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserRegister not implemented")
+}
+func (*UnimplementedUserServiceServer) UserLogout(context.Context, *UserRequest) (*UserDetailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserLogout not implemented")
 }
 
 func RegisterUserServiceServer(s *grpc.Server, srv UserServiceServer) {
 	s.RegisterService(&_UserService_serviceDesc, srv)
 }
 
-func _UserService_UesrLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserService_UserLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServiceServer).UesrLogin(ctx, in)
+		return srv.(UserServiceServer).UserLogin(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.UserService/UesrLogin",
+		FullMethod: "/pb.UserService/UserLogin",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).UesrLogin(ctx, req.(*UserRequest))
+		return srv.(UserServiceServer).UserLogin(ctx, req.(*UserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -369,17 +388,39 @@ func _UserService_UserRegister_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_UserLogout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).UserLogout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.UserService/UserLogout",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).UserLogout(ctx, req.(*UserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _UserService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.UserService",
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "UesrLogin",
-			Handler:    _UserService_UesrLogin_Handler,
+			MethodName: "UserLogin",
+			Handler:    _UserService_UserLogin_Handler,
 		},
 		{
 			MethodName: "UserRegister",
 			Handler:    _UserService_UserRegister_Handler,
+		},
+		{
+			MethodName: "UserLogout",
+			Handler:    _UserService_UserLogout_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -14,30 +14,33 @@ func NewUserService() *UserService {
 	return &UserService{}
 }
 
-// UserLogin 用户登录 token
 func (*UserService) UserLogin(ctx context.Context, req *service.UserRequest) (resp *service.UserDetailResponse, err error) {
 	var user repository.User
 	resp = new(service.UserDetailResponse)
-	resp.Code = e.Success
+	resp.Code = e.SUCCESS
 	err = user.ShowUserInfo(req)
 	if err != nil {
-		resp.Code = e.Error
+		resp.Code = e.ERROR
 		return resp, err
 	}
 	resp.UserDetail = repository.BuildUser(user)
 	return resp, nil
 }
 
-// userRegister 用户注册
-func (*UserService) userRegister(ctx context.Context, req *service.UserRequest) (resp *service.UserDetailResponse, err error) {
+func (*UserService) UserRegister(ctx context.Context, req *service.UserRequest) (resp *service.UserDetailResponse, err error) {
 	var user repository.User
 	resp = new(service.UserDetailResponse)
-	resp.Code = e.Success
-	err = user.UserCreate(req)
+	resp.Code = e.SUCCESS
+	err = user.Create(req)
 	if err != nil {
-		resp.Code = e.Error
+		resp.Code = e.ERROR
 		return resp, err
 	}
 	resp.UserDetail = repository.BuildUser(user)
+	return resp, nil
+}
+
+func (*UserService) UserLogout(ctx context.Context, req *service.UserRequest) (resp *service.UserDetailResponse, err error) {
+	resp = new(service.UserDetailResponse)
 	return resp, nil
 }

@@ -1,8 +1,10 @@
 package repository
 
 import (
+	"fmt"
 	"strings"
 	"time"
+	"user/pkg/util"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -21,45 +23,42 @@ func InitDB() {
 	username := viper.GetString("mysql.username")
 	password := viper.GetString("mysql.password")
 	charset := viper.GetString("mysql.charset")
-
 	dsn := strings.Join([]string{username, ":", password, "@tcp(", host, ":", port, ")/", database, "?charset=" + charset + "&parseTime=true"}, "")
 	err := Database(dsn)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		util.LogrusObj.Error(err)
 	}
 }
 
-func Database(dsn string) error {
+func Database(connString string) error {
 	var ormLogger logger.Interface
 	if gin.Mode() == "debug" {
 		ormLogger = logger.Default.LogMode(logger.Info)
 	} else {
 		ormLogger = logger.Default
 	}
-
 	db, err := gorm.Open(mysql.New(mysql.Config{
-		DSN:                       dsn,
-		DefaultStringSize:         256,
-		DisableDatetimePrecision:  true,  //禁用datetime的精度 mysql5.6之前数据是不支持的
-		DontSupportRenameIndex:    true,  //重命名索引的时候采用删除并新建的方式，因为5.7之前数据库是不支持重命名的
-		DontSupportRenameColumn:   true,  //用change重命名列 mysql8之前数据库是不支持重命名列的
-		SkipInitializeWithVersion: false, //根据版本自动配置
+		DSN:                       connString, // DSN data source name
+		DefaultStringSize:         256,        // string 类型字段的默认长度
+		DisableDatetimePrecision:  true,       // 禁用 datetime 精度，MySQL 5.6 之前的数据库不支持
+		DontSupportRenameIndex:    true,       // 重命名索引时采用删除并新建的方式，MySQL 5.7 之前的数据库和 MariaDB 不支持重命名索引
+		DontSupportRenameColumn:   true,       // 用 `change` 重命名列，MySQL 8 之前的数据库和 MariaDB 不支持重命名列
+		SkipInitializeWithVersion: false,      // 根据版本自动配置
 	}), &gorm.Config{
 		Logger: ormLogger,
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},
 	})
-
 	if err != nil {
-		return err
+		panic(err)
 	}
-
 	sqlDB, _ := db.DB()
 	sqlDB.SetMaxIdleConns(20)  //设置连接池，空闲
-	sqlDB.SetMaxOpenConns(100) //设置最大连接数
-	sqlDB.SetConnMaxLifetime(time.Duration(30) * time.Second)
+	sqlDB.SetMaxOpenConns(100) //打开
+	sqlDB.SetConnMaxLifetime(time.Second * 30)
 	DB = db
 	migration()
-	return nil
+	return err
 }
