@@ -15,6 +15,7 @@ type List interface {
 	Clear()                                     //清空
 	Delete(index int) error                     //删除
 	String() string                             //返回字符串
+	Iterator() Iterator
 }
 
 type ArrayList struct {

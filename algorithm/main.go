@@ -2,47 +2,45 @@ package main
 
 import (
 	"algorithm/ArrayList"
+	"algorithm/StackArray"
 	"fmt"
 )
 
 func main1() {
-	list := ArrayList.NewArrayList()
-	list.Append(1)
-	list.Append(2)
-	list.Append(3)
-	fmt.Println(list)
+	myStatck := StackArray.NewStack()
+	myStatck.Push(1)
+	myStatck.Push(2)
+	myStatck.Push(3)
+	myStatck.Push(4)
+
+	fmt.Println(myStatck.Pop())
+	fmt.Println(myStatck.Pop())
+	fmt.Println(myStatck.Pop())
+	fmt.Println(myStatck.Pop())
 }
 
 func main2() {
-	list := ArrayList.NewArrayList()
-	list.Append("a")
-	list.Append("b")
-	list.Append("c")
-	fmt.Println(list)
-	fmt.Printf("list.TheSize: %v\n", list.TheSize)
-}
+	myStatck := ArrayList.NewArrayListStack()
+	myStatck.Push(1)
+	myStatck.Push(2)
+	myStatck.Push(3)
+	myStatck.Push(4)
 
-func main4() {
-	var list *ArrayList.ArrayList = ArrayList.NewArrayList()
-	list.Append("a")
-	list.Append("b")
-	list.Append("c")
-	fmt.Println(list)
-	fmt.Printf("list.TheSize: %v\n", list.TheSize)
+	fmt.Println(myStatck.Pop())
+	fmt.Println(myStatck.Pop())
+	fmt.Println(myStatck.Pop())
+	fmt.Println(myStatck.Pop())
 }
 
 func main() {
-	var list *ArrayList.ArrayList = ArrayList.NewArrayList()
-	list.Append("a")
-	list.Append("b")
-	list.Append("c")
-	fmt.Println(list)
-	list.Insert(1, "d")
-	fmt.Println(list)
-	for i := 0; i < 10; i++ {
-		list.Insert(1, "x5")
-		fmt.Println(list)
-	}
+	myStatck := ArrayList.NewArrayListStackIterator()
+	myStatck.Push(1)
+	myStatck.Push(2)
+	myStatck.Push(3)
+	myStatck.Push(4)
 
-	fmt.Printf("list.TheSize: %v\n", list.TheSize)
+	for it := myStatck.Iterator; it.HasNext(); {
+		item, _ := it.Next()
+		fmt.Println(item)
+	}
 }
